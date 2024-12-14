@@ -1,0 +1,97 @@
+const databaseUrl = 'https://blueroler-blogapp-default-rtdb.firebaseio.com/'; // Thay bằng URL database của bạn
+
+// Lấy danh sách bài viết
+async function savePost(event) {
+    event.preventDefault();
+  
+    const postId = document.getElementById('post-id').value;
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const name = document.getElementById('name').value;
+    const summary = document.getElementById('summary').value;
+
+    const postData = {
+      name,
+      title,
+      summary,
+      content,
+      timestamp: postId ? Date.now() : Date.now(),
+    };
+
+  
+    const method = postId ? 'PUT' : 'POST';
+    const url = postId
+      ? `${databaseUrl}/news/${postId}.json`
+      : `${databaseUrl}/news.json`;
+  
+    await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    });
+  
+    document.getElementById('post-form').reset();
+    fetchPosts();
+  }
+  
+  // Lấy bài viết và sắp xếp theo timestamp
+  async function fetchPosts() {
+    const response = await fetch(`${databaseUrl}/news.json`);
+    const posts = await response.json();
+
+    const postsArray = Object.entries(posts || {}).map(([id, item]) => ({
+      id,
+      ...item,
+    }));
+
+    // Sắp xếp bài viết theo timestamp từ mới nhất đến cũ nhất
+    postsArray.sort((a, b) => b.timestamp - a.timestamp);
+
+    const listContainer = document.getElementById('posts-list');
+    listContainer.innerHTML = '';
+
+    for (let post of postsArray) {
+      const postDiv = document.createElement('div');
+      postDiv.innerHTML = `
+        <div onclick="window.location.href='edit.html?id=${post.id}'" style="cursor: pointer; padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;">
+          <h3>${post.name}</h3>
+          <p>${post.summary}</p>
+          <small>Ngày đăng: ${new Date(post.timestamp).toLocaleString()}</small>
+        </div>
+        <button onclick="deletePost('${post.id}')">Xóa</button>
+      `;
+      listContainer.appendChild(postDiv);
+    }
+  }
+
+  async function deletePost(id) {
+    if (confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+      await fetch(`${databaseUrl}/news/${id}.json`, { method: 'DELETE' });
+      fetchPosts(); // Tải lại danh sách bài viết sau khi xóa
+    }
+  }
+
+  window.onload = fetchPosts;
+
+// Sửa bài viết
+function editPost(id, name, title, summary, content) {
+  document.getElementById('post-id').value = id;
+  document.getElementById('name').value = name;
+  document.getElementById('title').value = title;
+  document.getElementById('summary').value = summary;
+  document.getElementById('content').value = content;
+}
+
+// Xóa bài viết
+async function deletePost(id) {
+  if (confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+    await fetch(`${databaseUrl}/news/${id}.json`, { method: 'DELETE' });
+    fetchPosts();
+  }
+}
+
+// Gắn sự kiện cho form
+document.getElementById('post-form').addEventListener('submit', savePost);
+
+// Lấy danh sách bài viết khi tải trang
+fetchPosts();

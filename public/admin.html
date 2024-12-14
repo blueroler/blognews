@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Quản lý bài viết</title>
+  <link rel="stylesheet" href="/css/adminstyle.css">
+</head>
+<body>
+  <h1>Thêm bài đăng mới</h1>
+
+  <!-- Form thêm/cập nhật bài viết -->
+  <form id="post-form">
+    <div>
+      <label for="name">Đặt đường dẫn:</label>
+      <input placeholder="Để trống nếu muốn đường dẫn tự động" type="text" id="post-id" />
+    </div>
+    <div>
+      <label for="name">Tên bài viết:</label>
+      <input type="text" id="name" required />
+    </div>
+    <div>
+      <label for="summary">Mô tả nhanh:</label>
+      <textarea id="summary" required></textarea>
+    </div>
+    <button type="submit">Lưu bài viết</button>
+  </form>
+  
+
+  <h2>Quản lý các bài đăng</h2>
+  <div id="posts-list"></div>
+
+  <script src="/javascript/admin.js"></script>
+</body>
+</html>

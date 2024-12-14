@@ -1,0 +1,122 @@
+/* Tổng quát */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Tiêu đề chính */
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin: 20px 0;
+}
+
+/* Container bài viết */
+#news-container, #posts-list {
+  display: flex;
+  flex-direction: column; /* Hiển thị theo cột */
+  align-items: center;
+  padding: 20px;
+  gap: 20px; /* Khoảng cách giữa các bài viết */
+}
+
+/* Bài viết trong danh sách */
+#news-container .news-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 90%; /* Chiếm 90% chiều rộng màn hình */
+  max-width: 600px; /* Giới hạn tối đa chiều rộng */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer; /* Thêm con trỏ để người dùng biết có thể nhấn */
+}
+
+#news-container .news-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+#news-container div:hover, #posts-list div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Tiêu đề bài viết */
+#news-container h2, #posts-list h3 {
+  font-size: 20px;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+/* Nội dung mô tả nhanh */
+#news-container p, #posts-list p {
+  font-size: 14px;
+  color: #7f8c8d;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+/* Nút hành động */
+button {
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+/* Bài viết chi tiết */
+#post-name {
+  font-size: 28px;
+  color: #2c3e50;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#post-title {
+  font-size: 22px;
+  color: #8e44ad;
+  text-align: center;
+  margin-top: 10px;
+}
+
+#post-summary {
+  font-size: 18px;
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+#post-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  #news-container div, #posts-list div {
+    width: 95%; /* Điều chỉnh chiều rộng trên thiết bị nhỏ */
+  }
+
+  #post-content {
+    padding: 15px;
+  }
+}

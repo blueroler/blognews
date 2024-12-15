@@ -1,5 +1,3 @@
-const databaseUrl = 'https://blueroler-blogapp-default-rtdb.firebaseio.com/'; // Replace with your Firebase Database URL
-
 async function fetchNews() {
     const response = await fetch(`${databaseUrl}/news.json`);
     const news = await response.json();

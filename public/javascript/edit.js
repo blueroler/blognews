@@ -1,10 +1,10 @@
-const databaseUrl = 'https://blueroler-blogapp-default-rtdb.firebaseio.com/';
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get('id');
-const dataContainer = document.getElementById('hbody');
+
 
 // Lấy dữ liệu bài viết để hiển thị
 async function fetchPostData() {
+    const dataContainer = document.getElementById('hbody');
     if (!postId) return;
 
     try {
@@ -18,11 +18,27 @@ async function fetchPostData() {
 
         // Kiểm tra và hiển thị dữ liệu
         let htmlContent = '';
+        htmlContent += `<tr>
+                                <td>ID hay đường dẫn</td>
+                                <td>${postId}</td>
+                            </tr>`;
         if (post.name) {
-            htmlContent += `<h2>${post.name}</h2>`;
+            htmlContent += `<tr>
+                                <td>Tên bài đăng</td>
+                                <td>${post.name}</td>
+                            </tr>`;
         }
         if (post.summary) {
-            htmlContent += `<p>${post.summary}</p>`;
+            htmlContent += `<tr>
+                                <td>Mô tả nhanhnhanh</td>
+                                <td>${post.summary}</td>
+                            </tr>`;
+        }
+        if (post.timestamp) {
+            htmlContent += `<tr>
+                                <td>Ngày đăng tải</td>
+                                <td><small>${new Date(post.timestamp).toLocaleString()}</small></td>
+                            </tr>`;
         }
 
         dataContainer.innerHTML = htmlContent;
@@ -70,6 +86,15 @@ async function fetchAndDisplayData() {
                                         <button onclick="removeID('${key}')">Delete</button>
                                     </td>
                                 </tr>`;
+            } else if (field === 'image') {
+                htmlContent += `
+                                <tr>
+                                    <td>Ảnh</td>
+                                    <td><img src="${value}" width="300" height="auto" /></td>
+                                    <td>
+                                        <button onclick="removeID('${key}')">Delete</button>
+                                    </td>
+                                </tr>`;
             }
         }
 
@@ -95,6 +120,7 @@ async function removeID(key) {
 
         if (response.ok) {
             fetchAndDisplayData(); // Cập nhật lại danh sách sau khi xóa
+            updatetime();
         } else {
             alert('Xóa dữ liệu thất bại.');
         }
@@ -132,6 +158,8 @@ async function createNewRef(field, value) {
                 document.getElementById('title').value = '';
             } else if (field === 'content') {
                 document.getElementById('content').value = '';
+            } else if (field === 'image') {
+                document.getElementById('image').value = '';
             }
         } else {
             alert('Lưu dữ liệu thất bại.');
@@ -142,8 +170,25 @@ async function createNewRef(field, value) {
     }
 
     fetchAndDisplayData(); // Cập nhật dữ liệu hiển thị
+    updatetime();
 }
+async function updatetime() {
+    const postData = {
+        timestamp: postId ? Date.now() : Date.now(),
+    };
 
+    const method = postId ? 'PATCH' : 'POST';
+    const url = postId
+        ? `${databaseUrl}/news/${postId}.json`
+        : `${databaseUrl}/news.json`;
+
+    await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postData),
+    });
+    fetchPostData();
+}
 
 // Tải dữ liệu khi mở trang
 fetchAndDisplayData();

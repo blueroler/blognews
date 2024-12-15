@@ -1,5 +1,3 @@
-const databaseUrl = 'https://blueroler-blogapp-default-rtdb.firebaseio.com/'; // Thay bằng URL database của bạn
-
 // Lấy danh sách bài viết
 async function savePost(event) {
     event.preventDefault();
@@ -51,8 +49,8 @@ async function fetchPosts() {
             <h3>${post.name}</h3>
             <p>${post.summary}</p>
             <small>Ngày đăng: ${new Date(post.timestamp).toLocaleString()}</small>
-            <button style="background: #2ecc71 !important; color: #fff !important;" onclick="redirectToEdit('${post.id}')">Sửa</button>
-            <button style="background: #f1c40f !important; color: #fff !important;" onclick="deletePost('${post.id}')">Xóa</button>
+            <button style="background: #2ecc71;" onclick="redirectToEdit('${post.id}')">Sửa</button>
+            <button style="background: #f1c40f;" onclick="deletePost('${post.id}')">Xóa</button>
         `;
         listContainer.appendChild(postDiv);
     }

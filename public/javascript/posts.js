@@ -1,37 +1,37 @@
 // Lấy ID bài viết từ URL
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get('id');
-const databaseUrl = 'https://blueroler-blogapp-default-rtdb.firebaseio.com/';
-const dataContainer = document.getElementById('hbody');
+
 
 async function fetchPost() {
-if (!postId) return;
+    const dataContainer = document.getElementById('hbody');
+    if (!postId) return;
 
-try {
-    const response = await fetch(`${databaseUrl}/news/${postId}.json`);
-    if (!response.ok) {
-        console.error('Không thể lấy dữ liệu từ server.');
-        return;
-    }
+    try {
+        const response = await fetch(`${databaseUrl}/news/${postId}.json`);
+        if (!response.ok) {
+            console.error('Không thể lấy dữ liệu từ server.');
+            return;
+        }
 
-    const post = await response.json();
+        const post = await response.json();
 
-    // Kiểm tra và hiển thị dữ liệu
-    let htmlContent = '';
-    if (post.name) {
-        htmlContent += `<h2>${post.name}</h2>`;
-    }
-    if (post.summary) {
+        // Kiểm tra và hiển thị dữ liệu
+        let htmlContent = '';
+        if (post.name) {
+            htmlContent += `<h2>${post.name}</h2>`;
+        }
+        if (post.summary) {
         htmlContent += `<p>${post.summary}</p>`;
-    }
-    if (post.timestamp) {
+        }
+        if (post.timestamp) {
         htmlContent += `<small>Ngày đăng: ${new Date(post.timestamp).toLocaleString()}</small>`;
-    }
+        }
 
-    dataContainer.innerHTML = htmlContent;
-} catch (error) {
-  fetchPostDetails();
-}
+        dataContainer.innerHTML = htmlContent;
+    } catch (error) {
+    fetchPostDetails();
+    }
 }
 
 async function fetchAndDisplayData() {
@@ -58,6 +58,8 @@ try {
             htmlContent += `<h3>${value}</h3>`;
         } else if (field === 'content') {
             htmlContent += `<p>${value}</p>`;
+        } else if (field === 'image') {
+            htmlContent += `<img src="${value}" width="300" height="auto" />`;
         }
     }
 

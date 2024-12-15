@@ -27,16 +27,16 @@ body {
     margin-bottom: 20px;
   }
   
-  #tbody {
+  #hbody, #tbody, #ebody {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
   }
   
-  #tbody th, #tbody td {
+  #hbody td, #tbody td, #ebody td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center;
   }
   
   #tbody th {
@@ -56,10 +56,15 @@ body {
   textarea {
     width: calc(100% - 20px);
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 0px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
   }
+
+  input:focus, textarea:focus {
+    outline: none; /* Loại bỏ viền mặc định */
+    box-shadow: none; /* Loại bỏ hiệu ứng đổ bóng (nếu có) */
+}
   
   button {
     margin-top: 10px;

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tạo mới bài viết</title>
+  <link rel="stylesheet" href="/css/add.css">
+</head>
+<body>
+  <h1>Thêm bài đăng mới</h1>
+
+  <form id='posts'>
+    <input style="display: none;" id="post-id" />
+    <div>
+      <label for="name">Tên bài viết:</label>
+      <input type="text" id="name" required />
+    </div>
+    <div>
+      <label for="summary">Ảnh thumbnail:</label>
+      <textarea rows="4" cols="50" id="summary" placeholder="Link ảnh nhúng" required></textarea>
+    </div>
+    <div class="just-center">
+      <button id="addnews" type="button">Tạo bài viết thường</button>
+      <button id="addhots" type="button">Tạo bài viết nổi bật</button>
+    </div>
+
+  </form>
+
+  <script src="/api/link.js"></script>
+  <script>
+    // Gắn sự kiện cho form
+    // document.getElementById('posts').addEventListener('submit', savePost);
+
+    // Lắng nghe sự kiện click
+    document.getElementById('addnews').addEventListener('click', (event) => {addnews(event);});
+    document.getElementById('addhots').addEventListener('click', (event) => {addhots(event);});
+
+
+
+    // chức năng tạo bài viết
+    async function addnews(event) {
+        event.preventDefault();
+
+        const postId = document.getElementById('post-id').value;
+        const name = document.getElementById('name').value;
+        const summary = document.getElementById('summary').value;
+
+        const postData = {
+            name,
+            summary,
+            timestamp: postId ? Date.now() : Date.now(),
+        };
+
+        const method = postId ? 'PUT' : 'POST';
+        const url = postId
+            ? `${databaseUrl}/news/${postId}.json`
+            : `${databaseUrl}/news.json`;
+
+        await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData),
+        });
+
+        document.getElementById('posts').reset();
+        window.location.href = `admin.html`;
+    }
+
+
+    
+    async function addhots(event) {
+        event.preventDefault();
+
+        const postId = document.getElementById('post-id').value;
+        const name = document.getElementById('name').value;
+        const summary = document.getElementById('summary').value;
+
+        const postData = {
+            name,
+            summary,
+            timestamp: postId ? Date.now() : Date.now(),
+        };
+
+        const method = postId ? 'PUT' : 'POST';
+        const url = postId
+            ? `${databaseUrl}/hots/${postId}.json`
+            : `${databaseUrl}/hots.json`;
+
+        await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData),
+        });
+
+        document.getElementById('posts').reset();
+        window.location.href = `admin.html`;
+    }
+
+  </script>
+</body>
+</html>

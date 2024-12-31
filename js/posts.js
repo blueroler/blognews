@@ -1,6 +1,18 @@
 // Lấy ID bài viết từ URL
 const urlParams = new URLSearchParams(window.location.search);
-const postId = urlParams.get('id');
+const NewsHots = urlParams.get('id');
+let postId;
+let bien;
+
+
+if (NewsHots == 'News'+ NewsHots.slice(4) ) {
+    postId = NewsHots.slice(4);
+    bien = 'news';
+  } else {
+    postId = NewsHots.slice(4);
+    bien = 'hots';
+  }
+
 
 
 async function fetchPost() {
@@ -8,7 +20,7 @@ async function fetchPost() {
     if (!postId) return;
 
     try {
-        const response = await fetch(`${databaseUrl}/news/${postId}.json`);
+        const response = await fetch(`${databaseUrl}/${bien}/${postId}.json`);
         if (!response.ok) {
             console.error('Không thể lấy dữ liệu từ server.');
             return;
@@ -40,7 +52,7 @@ if (!postId) {
     return;
 }
 
-const fetchUrl = `${databaseUrl}/news/${postId}.json`;
+const fetchUrl = `${databaseUrl}/${bien}/${postId}.json`;
 try {
     const response = await fetch(fetchUrl);
     if (!response.ok) {
@@ -70,7 +82,7 @@ try {
 }
 
 async function fetchPostDetails() {
-  const response = await fetch(`${databaseUrl}/news/${postId}.json`);
+  const response = await fetch(`${databaseUrl}/${bien}/${postId}.json`);
   const post = await response.json();
 
   if (post) {
